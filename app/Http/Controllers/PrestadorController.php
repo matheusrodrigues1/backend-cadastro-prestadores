@@ -18,6 +18,9 @@ class PrestadorController extends Controller
             'email' => 'required|email|unique:prestadores',
             'telefone' => 'required|string',
             'foto' => 'file',
+            'nome_servico' => 'required|string',
+            'descricao' => 'required|string',
+            'valor' => 'required|numeric',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -29,5 +32,4 @@ class PrestadorController extends Controller
 
         return response()->json(['message' => 'Prestador cadastrado com sucesso', 'prestador' => $prestador], 201);
     }
-
 }

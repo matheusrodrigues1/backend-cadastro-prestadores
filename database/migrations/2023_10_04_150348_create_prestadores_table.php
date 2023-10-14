@@ -17,8 +17,11 @@ return new class extends Migration
             $table->id();
             $table->string('nome');
             $table->string('telefone');
-            $table->string('email')->unique();
+            $table->string('email', 191)->unique();
             $table->string('foto')->nullable();
+            $table->string('nome_servico');
+            $table->text('descricao');
+            $table->string('valor');
             $table->timestamps();
         });
     }
