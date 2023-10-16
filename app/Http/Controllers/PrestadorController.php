@@ -2,34 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Prestador;
 use Illuminate\Http\Request;
+use App\Models\Prestador; // Importe o modelo Prestador se você tiver um
 
 class PrestadorController extends Controller
 {
-    public function index() {
-        return Prestador::paginate(10);
-    }
-
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'nome' => 'required|string',
-            'email' => 'required|email|unique:prestadores',
-            'telefone' => 'required|string',
-            'foto' => 'file',
-            'nome_servico' => 'required|string',
-            'descricao' => 'required|string',
-            'valor' => 'required|numeric',
+        $request->validate([
+            'nome' => 'required|string|min:3|max:255',
+            'telefone' => 'required|string|min:6|max:20',
+            'email' => 'required|string|email|max:191|unique:prestadores',
+            'foto' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'nome_servico' => 'required|string|min:5',
+            'descricao' => 'required|string|min:5|max:200',
+            'valor' => 'required|string',
         ]);
 
+        $prestador = new Prestador();
+        $prestador->nome = $request->nome;
+        $prestador->telefone = $request->telefone;
+        $prestador->email = $request->email;
+        $prestador->nome_servico = $request->nome_servico;
+        $prestador->descricao = $request->descricao;
+        $prestador->valor = $request->valor;
+
         if ($request->hasFile('foto')) {
-            $file = $request->file('foto');
-            $data['foto'] = file_get_contents($file);
+            $foto = $request->file('foto');
+            $nomeFoto = time() . '_' . $foto->getClientOriginalName();
+            $foto->storeAs('uploads', $nomeFoto, 'public');
+            $prestador->foto = $nomeFoto;
         }
 
-        $prestador = Prestador::create($data);
+        $prestador->save();
 
-        return response()->json(['message' => 'Prestador cadastrado com sucesso', 'prestador' => $prestador], 201);
+        return response()->json(['message' => 'Prestador cadastrado com sucesso']);
     }
 }

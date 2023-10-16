@@ -19,8 +19,4 @@ class Prestador extends Model
         'descricao',
         'valor',
     ];
-
-    protected $casts = [
-        'foto' => 'binary',
-    ];
 }
