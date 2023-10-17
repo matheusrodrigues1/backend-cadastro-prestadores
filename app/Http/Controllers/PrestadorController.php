@@ -16,7 +16,7 @@ class PrestadorController extends Controller
             'foto' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'nome_servico' => 'required|string|min:5',
             'descricao' => 'required|string|min:5|max:200',
-            'valor' => 'required|string',
+            'valor' => 'required|numeric',
         ]);
 
         $prestador = new Prestador();
@@ -38,4 +38,17 @@ class PrestadorController extends Controller
 
         return response()->json(['message' => 'Prestador cadastrado com sucesso']);
     }
+
+    public function index()
+    {
+        $prestadores = Prestador::all();
+        return response()->json($prestadores);
+    }
+
+    public function destroy($id)
+    {
+        Prestador::destroy($id);
+        return response()->json(['message' => 'Prestador excluído com sucesso']);
+    }
+
 }
