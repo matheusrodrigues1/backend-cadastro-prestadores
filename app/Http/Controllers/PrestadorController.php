@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Prestador; // Importe o modelo Prestador se você tiver um
+use App\Models\Prestador;
 
 class PrestadorController extends Controller
 {
